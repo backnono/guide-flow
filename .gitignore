@@ -1,0 +1,7 @@
+var/vision-soak/
+.DS_Store
+.idea/
+.agent-context/
+dev.env
+*.env
+*.env.*

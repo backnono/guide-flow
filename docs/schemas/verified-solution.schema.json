@@ -1,0 +1,29 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "guide-flow/verified-solution.schema.json",
+  "title": "VerifiedSolution",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["parameters", "expressions", "intermediateSteps", "finalAnswer", "validation"],
+  "properties": {
+    "templateId": {"type": "string"},
+    "templateVersion": {"type": "integer", "minimum": 0},
+    "parameters": {"type": "object", "additionalProperties": {"type": "string"}},
+    "expressions": {"type": "array", "items": {"type": "string"}},
+    "intermediateSteps": {"type": "array", "items": {"type": "string"}},
+    "finalAnswer": {"type": "string"},
+    "validation": {"$ref": "#/$defs/validation"}
+  },
+  "$defs": {
+    "validation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["status", "checks"],
+      "properties": {
+        "status": {"enum": ["verified", "needs_confirmation", "rejected", "unsupported"]},
+        "checks": {"type": "array", "items": {"type": "string"}},
+        "message": {"type": "string"}
+      }
+    }
+  }
+}

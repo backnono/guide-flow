@@ -1,0 +1,68 @@
+services:
+  mysql:
+    image: mysql:8.4
+    container_name: guide-flow-mysql
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: guide_flow
+      MYSQL_USER: app
+      MYSQL_PASSWORD: app
+    ports:
+      # 宿主机 3308 避开当前已占用的 3307 和 13306，容器内仍使用 MySQL 默认端口 3306。
+      - "3308:3306"
+    volumes:
+      - guide-flow-mysql-data:/var/lib/mysql
+      # 仅在数据卷首次创建时执行初始化 SQL；后续重启不会重复执行。
+      - ./docs/database/001_initial.sql:/docker-entrypoint-initdb.d/001_initial.sql:ro
+    healthcheck:
+      test: ["CMD-SHELL", "mysqladmin ping -h 127.0.0.1 -uapp -papp --silent"]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+
+  minio:
+    image: quay.io/minio/minio:latest
+    container_name: guide-flow-minio
+    command: server /data --console-address ":9001"
+    restart: unless-stopped
+    environment:
+      MINIO_ROOT_USER: minioadmin
+      MINIO_ROOT_PASSWORD: minioadmin
+    ports:
+      # 9000 是 S3 API，9001 是本地管理控制台。
+      - "9000:9000"
+      - "9001:9001"
+    volumes:
+      - guide-flow-minio-data:/data
+
+  minio-init:
+    image: quay.io/minio/mc:latest
+    container_name: guide-flow-minio-init
+    depends_on:
+      - minio
+    restart: "no"
+    entrypoint: ["/bin/sh", "-c"]
+    command:
+      - >-
+        until mc alias set local http://minio:9000 minioadmin minioadmin; do
+          echo "waiting for MinIO";
+          sleep 2;
+        done;
+        mc mb --ignore-existing local/guide-flow;
+        mc anonymous set none local/guide-flow;
+
+  redis:
+    image: redis:7-alpine
+    container_name: guide-flow-redis
+    restart: unless-stopped
+    command: redis-server --appendonly yes
+    ports:
+      - "6379:6379"
+    volumes:
+      - guide-flow-redis-data:/data
+
+volumes:
+  guide-flow-mysql-data:
+  guide-flow-minio-data:
+  guide-flow-redis-data:

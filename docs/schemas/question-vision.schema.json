@@ -1,0 +1,112 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://guide-flow.local/schemas/question-vision-v1.json",
+  "title": "Guide Flow Structured Question",
+  "type": "object",
+  "required": ["schemaVersion", "grade", "topic", "normalizedText", "knowns", "relations", "asks"],
+  "properties": {
+    "schemaVersion": { "const": "question-vision-v1" },
+    "grade": { "type": "integer", "minimum": 0 },
+    "topic": { "type": "string", "minLength": 1 },
+    "normalizedText": { "type": "string", "minLength": 1 },
+    "knowns": { "type": "array", "items": { "$ref": "#/$defs/known" } },
+    "relations": { "type": "array", "items": { "type": "string" } },
+    "asks": { "type": "array", "minItems": 1, "items": { "type": "string" } },
+    "uncertainItems": { "type": "array", "items": { "type": "string" } },
+    "expressions": { "type": "array", "items": { "$ref": "#/$defs/expression" } },
+    "payload": {
+      "type": "object",
+      "required": ["kind"],
+      "properties": { "kind": { "type": "string" }, "data": {} },
+      "additionalProperties": true
+    },
+    "diagram": {
+      "type": "object",
+      "required": ["figures"],
+      "properties": { "figures": { "type": "array", "items": { "$ref": "#/$defs/figure" } } },
+      "additionalProperties": true
+    }
+  },
+  "additionalProperties": true,
+  "$defs": {
+    "known": {
+      "type": "object",
+      "required": ["name", "value", "unit"],
+      "properties": { "name": { "type": "string" }, "value": { "type": "string" }, "unit": { "type": "string" } },
+      "additionalProperties": true
+    },
+    "expression": {
+      "type": "object",
+      "required": ["raw"],
+      "properties": {
+        "raw": { "type": "string", "minLength": 1 },
+        "latex": { "type": "string" },
+        "kind": { "type": "string" },
+        "variables": { "type": "array", "items": { "type": "string" } },
+        "uncertainItems": { "type": "array", "items": { "type": "string" } }
+      },
+      "additionalProperties": true
+    },
+    "constraint": {
+      "type": "object",
+      "required": ["type"],
+      "properties": {
+        "type": { "type": "string", "minLength": 1 },
+        "points": { "type": "array", "items": { "type": "string" } },
+        "point": { "type": "string" },
+        "lines": { "type": "array", "items": { "type": "string" } },
+        "segments": { "type": "array", "items": { "type": "string" } },
+        "curves": { "type": "array", "items": { "$ref": "#/$defs/curve" } },
+        "segment": { "type": "string" },
+        "operator": { "type": "string" }
+      },
+      "additionalProperties": true
+    },
+    "layoutHints": {
+      "type": "object",
+      "properties": {
+        "aspectRatio": { "type": "number", "exclusiveMinimum": 0 },
+        "orientation": { "type": "string", "enum": ["portrait", "landscape"] },
+        "anchors": { "type": "object", "additionalProperties": { "type": "object", "required": ["x", "y"], "properties": { "x": { "type": "number", "minimum": 0, "maximum": 1 }, "y": { "type": "number", "minimum": 0, "maximum": 1 } } } }
+      },
+      "additionalProperties": true
+    },
+    "coordinate": {
+      "type": "object",
+      "required": ["x", "y"],
+      "properties": {
+        "x": { "type": ["string", "number"] },
+        "y": { "type": ["string", "number"] }
+      },
+      "additionalProperties": true
+    },
+    "curve": {
+      "type": "object",
+      "required": ["type", "endpoints"],
+      "properties": {
+        "type": { "type": "string", "enum": ["arc"] },
+        "endpoints": { "type": "array", "minItems": 2, "maxItems": 2, "items": { "type": "string" } },
+        "center": { "type": "string" },
+        "sweep": { "type": "string", "enum": ["upper", "lower"] }
+      },
+      "additionalProperties": false
+    },
+    "figure": {
+      "type": "object",
+      "required": ["id", "points", "segments", "intersections", "collinear"],
+      "properties": {
+        "id": { "type": "string" },
+        "title": { "type": "string" },
+        "points": { "type": "array", "items": { "type": "string" } },
+        "segments": { "type": "array", "items": { "type": "string" } },
+        "intersections": { "type": "array", "items": { "type": "object", "required": ["point", "of"], "properties": { "point": { "type": "string" }, "of": { "type": "array", "items": { "type": "string" }, "minItems": 1 } } } },
+        "collinear": { "type": "array", "items": { "type": "array", "items": { "type": "string" }, "minItems": 2 } },
+        "coordinates": { "type": "object", "additionalProperties": { "$ref": "#/$defs/coordinate" } },
+        "shape": { "type": "string", "minLength": 1 },
+        "constraints": { "type": "array", "items": { "$ref": "#/$defs/constraint" } },
+        "layoutHints": { "$ref": "#/$defs/layoutHints" }
+      },
+      "additionalProperties": true
+    }
+  }
+}

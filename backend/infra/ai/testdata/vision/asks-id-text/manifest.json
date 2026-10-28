@@ -1,0 +1,9 @@
+{
+  "caseId": "asks-id-text",
+  "sourceImageSha256": "fixture-derived",
+  "promptVersion": "question-vision-v4",
+  "schemaVersion": "question-vision-v1",
+  "responseFile": "response.json",
+  "expected": "success",
+  "expectedAsks": ["求AE的长度"]
+}

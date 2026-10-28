@@ -1,0 +1,19 @@
+{
+  "caseId": "geometry-01",
+  "image": "/Users/nono/Downloads/几何 2.png",
+  "imageSha256": "cdd36fa14711dc3f1223a86553a27fbb3cb1e1cf39a799c0f4b66c8fffe1c5fb",
+  "figures": [
+    {
+      "id": "figure_1",
+      "requiredPoints": ["A", "B", "C", "D", "E", "F"],
+      "requiredSegments": ["AB", "BC", "AC", "DE", "DF", "EF"],
+      "invariants": ["angle(C)=90deg", "AC>BC", "D midpoint of AB", "E midpoint of AC", "F inside segment BC", "DF perpendicular DE"]
+    },
+    {
+      "id": "figure_2",
+      "requiredPoints": ["A", "B", "C", "D"],
+      "requiredSegments": ["AB", "BC", "AC"],
+      "invariants": ["angle(C)=90deg", "AC>BC", "D midpoint of AB", "E and F are not asserted as drawn points"]
+    }
+  ]
+}

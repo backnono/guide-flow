@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>讲给我听 · 小学数学辅导</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div class="app-shell">
+      <header class="topbar">
+        <a class="brand" href="#top" aria-label="讲给我听首页">
+          <span class="brand-mark">算</span>
+          <span><strong>讲给我听</strong><small>小学数学辅导</small></span>
+        </a>
+        <div class="topbar-note"><span class="status-dot"></span>陪你把“不会教”变成“会讲了”</div>
+        <button class="profile" type="button" aria-label="用户资料">林奶奶 <span>⌄</span></button>
+      </header>
+
+      <main id="top">
+        <section class="hero">
+          <div class="hero-copy">
+            <p class="eyebrow">家庭辅导 · 01 / 题目讲解</p>
+            <h1>一道题，<em>慢慢讲</em><br />孩子就会了。</h1>
+            <p class="hero-lede">拍下作业，先看懂题目，再用孩子听得懂的方式，一步一步讲清楚。</p>
+            <div class="trust-row"><span>✓ 五六年级适用</span><span>✓ 不只给答案</span><span>✓ 可以反复听</span></div>
+          </div>
+          <div class="hero-doodle" aria-hidden="true"><span class="sun">✦</span><div class="orbit orbit-a"></div><div class="orbit orbit-b"></div><span class="number n-one">1</span><span class="number n-two">2</span><span class="number n-three">3</span><span class="pencil">↗</span></div>
+        </section>
+
+        <section class="workspace-grid" aria-label="题目辅导工作区">
+          <aside class="capture-card card">
+            <div class="card-heading"><div><p class="section-kicker">STEP 01</p><h2>把题目交给我</h2></div><span class="round-icon">⌁</span></div>
+            <label class="upload-zone" for="question-image">
+              <input id="question-image" type="file" accept="image/*" />
+              <span class="upload-icon">＋</span><strong>上传题目照片</strong><small>支持 JPG、PNG，尽量拍清楚题干和图形</small>
+            </label>
+            <div class="or-line"><span>或者先试试示例题</span></div>
+            <button class="sample-button" id="load-sample" type="button"><span class="sample-thumb">题</span><span><strong>五年级 · 分数应用题</strong><small>小明看一本 120 页的书……</small></span><span class="arrow">→</span></button>
+            <div class="privacy-note">▣ 图片只用于本次讲解，不会公开展示</div>
+          </aside>
+
+          <section class="lesson-card card" aria-live="polite">
+            <div class="card-heading lesson-heading"><div><p class="section-kicker">STEP 02 · 已识别</p><h2>先把题目读懂</h2></div><span class="confidence">识别清楚度 98%</span></div>
+            <div class="question-paper"><span class="paper-label">题目</span><p id="question-text">小明看一本 120 页的书，第一天看了全书的 <b>1/3</b>，第二天看了剩下的 <b>1/4</b>。第二天看了多少页？</p><button class="edit-question" id="edit-question" type="button">修改文字</button></div>
+            <div class="topic-row"><span class="topic-chip">分数应用题</span><span class="topic-chip muted">五年级下册 · 分数乘法</span></div>
+            <div class="lesson-divider"><span>今天我们只解决一个小问题</span></div>
+            <div class="step-viewer">
+              <div class="step-count"><span id="step-number">01</span><span>/ 03</span></div>
+              <div class="step-copy"><h3 id="step-title">先找出“剩下的页数”</h3><p id="step-description">第一天看了全书的 1/3，所以还剩下全书的 2/3。我们先不急着算第二天，先把“剩下的”找出来。</p></div>
+              <div class="visual-stage" id="visual-stage"><div class="book-bar"><span class="bar-read"></span><span class="bar-left"></span></div><div class="bar-caption"><span>第一天：1/3</span><span>剩下：2/3</span></div><div class="stage-note">把整本书看成 3 份</div></div>
+            </div>
+            <div class="step-controls"><button class="audio-button" id="read-aloud" type="button"><span>◖</span> 听我讲</button><div class="pager"><button id="prev-step" type="button" aria-label="上一步">←</button><span id="step-dots"><i class="active"></i><i></i><i></i></span><button id="next-step" type="button" aria-label="下一步">→</button></div></div>
+          </section>
+        </section>
+
+        <section class="practice-card card">
+          <div><p class="section-kicker">STEP 03 · 巩固一下</p><h2>换一道相似的，你来试试</h2><p class="practice-prompt">一盒彩笔有 48 支，送给弟弟全盒的 1/4，送了多少支？</p></div>
+          <div class="practice-answer"><label for="answer">我的答案</label><div class="answer-input"><input id="answer" inputmode="numeric" placeholder="写数字" /><span>支</span></div><button id="check-answer" type="button">检查一下</button><p class="feedback" id="feedback"></p></div>
+        </section>
+      </main>
+      <footer><span>讲给我听</span><span>每一步都值得被讲明白。</span></footer>
+    </div>
+    <script src="app.js"></script>
+  </body>
+</html>

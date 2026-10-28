@@ -1,0 +1,72 @@
+# Guide Flow 后端配置文件。
+# 所有配置都支持 APP_ 前缀环境变量覆盖，例如：
+# server.http_addr -> APP_SERVER_HTTP_ADDR
+# database.mysql_dsn -> APP_DATABASE_MYSQL_DSN
+server:
+  http_addr: ":8080"
+
+database:
+  # 对应 docker-compose.yml 暴露的宿主机端口 3308。
+  # DATETIME 不保存时区，应用统一以 UTC 写入和读取，接口层再转换为 Asia/Shanghai 展示。
+  mysql_dsn: "app:app@tcp(127.0.0.1:3308)/guide_flow?charset=utf8mb4&parseTime=True&loc=Asia%2FShanghai"
+
+object_store:
+  # 后端运行在宿主机时使用 127.0.0.1；如果后端也放入 Compose，应改为 http://minio:9000。
+  endpoint: "http://127.0.0.1:9000"
+  region: "us-east-1"
+  bucket: "guide-flow"
+  access_key: "minioadmin"
+  secret_key: "minioadmin"
+  use_path_style: true
+  key_prefix: "guide-flow"
+  presign_minutes: 15
+
+redis:
+  # 本地异步任务队列；Redis Streams 会保存 Pending 消息，支持后端重启后恢复。
+  addr: "127.0.0.1:6379"
+  db: 0
+  stream: "guide-flow:lessons"
+  group: "guide-flow-workers"
+  consumer: "local-worker"
+  visibility_timeout_secs: 30
+  # 解题外部调用失败时先只执行一次，避免队列重试与模型内部重试叠加放大等待时间。
+  max_attempts: 1
+  retry_base_delay_secs: 2
+  job_timeout_secs: 120
+  claim_interval_secs: 5
+  read_block_millis: 2000
+
+ocr:
+  # aliyun 使用阿里云 OCR SDK；AccessKey 通过 APP_OCR_ACCESS_KEY_ID/SECRET 注入，不写入此文件。
+  provider: "demo"
+  endpoint: "ocr-api.cn-hangzhou.aliyuncs.com"
+  api_key: ""
+  timeout_secs: 30
+  max_retries: 2
+  retry_base_delay_millis: 200
+  # Vision 解析关闭 thinking，预算用于正式 JSON；复杂题保留多张图和公式时需要更大余量。
+  max_tokens: 8192
+
+search:
+# Phase 1 使用 DeepSeek Tool Calling 编排 DeepSeek 自研 Search API；未配置 API Key 时不会联网。
+  provider: "deepseek"
+  endpoint: "https://api.deepseek.com/v1/tools/search"
+  api_key: ""
+  timeout_secs: 10
+  max_retries: 1
+  retry_base_delay_millis: 200
+  max_tool_calls: 3
+
+llm:
+  # API Key 不写入此文件；启动前通过 APP_LLM_API_KEY 注入。
+  provider: "deepseek"
+  endpoint: "https://api.deepseek.com/chat/completions"
+  api_key: ""
+  model: "deepseek-flash"
+  # 几何题讲解需要结合原图、题面和检索上下文生成草稿；预留 90 秒，避免把正常慢响应误判为失败。
+  # 重试由上层人工触发，避免与队列重试形成超时叠加。
+  timeout_secs: 90
+  max_retries: 0
+  retry_base_delay_millis: 200
+  # 流式响应连续无事件超过此时间才判定为卡住；总请求上限仍由 timeout_secs 控制。
+  stream_idle_timeout_secs: 30

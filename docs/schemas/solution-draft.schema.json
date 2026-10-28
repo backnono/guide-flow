@@ -1,0 +1,18 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "guide-flow/solution-draft.schema.json",
+  "title": "SolutionDraft",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schemaVersion", "method", "assumptions", "variables", "steps", "expressions", "finalAnswer", "uncertainties"],
+  "properties": {
+    "schemaVersion": {"type": "string", "const": "solution-draft-v1"},
+    "method": {"type": "string"},
+    "assumptions": {"type": "array", "items": {"type": "string"}},
+    "variables": {"type": "object", "additionalProperties": {"type": "string"}},
+    "steps": {"type": "array", "items": {"type": "string"}},
+    "expressions": {"type": "array", "items": {"type": "string"}},
+    "finalAnswer": {"type": "string"},
+    "uncertainties": {"type": "array", "items": {"type": "string"}}
+  }
+}

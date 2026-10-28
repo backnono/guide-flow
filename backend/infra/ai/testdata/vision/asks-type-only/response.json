@@ -1,0 +1,8 @@
+{
+  "topic": "geometry_numeric",
+  "normalizedText": "求解一道几何题。",
+  "knowns": [],
+  "relations": [],
+  "asks": [{"type": "expression"}],
+  "diagram": {"figures": [{"id": "图1", "points": ["A", "B"], "segments": ["AB"]}]}
+}

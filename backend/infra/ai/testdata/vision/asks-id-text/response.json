@@ -1,0 +1,8 @@
+{
+  "topic": "geometry_numeric",
+  "normalizedText": "在矩形ABCD中，求AE的长度。",
+  "knowns": [{"name": "AB", "value": "1", "unit": ""}],
+  "relations": [],
+  "asks": [{"id": "q1", "text": "求AE的长度", "type": "calculate"}],
+  "diagram": {"figures": [{"id": "图1", "points": ["A", "B", "C", "D", "E"], "segments": ["AB", "BC", "CD", "DA", "AE"]}]}
+}

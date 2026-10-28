@@ -1,0 +1,19 @@
+{
+  "caseId": "geometry-02",
+  "image": "/Users/nono/Downloads/几何.png",
+  "imageSha256": "1b49682742d749b04ea1a2ed264ca974c64ac7fdd160b4e0a7cae6c4de541345",
+  "figures": [
+    {
+      "id": "figure_1",
+      "requiredPoints": ["E", "A", "B", "C", "D", "F", "G"],
+      "requiredSegments": ["EA", "AB", "AD", "DC", "CB", "DB", "EC"],
+      "invariants": ["ABCD is rectangle", "E,A,B collinear", "EC intersects DB at G", "EC intersects AD at F", "AB<AD"]
+    },
+    {
+      "id": "figure_2",
+      "requiredPoints": ["E", "A", "B", "C", "D", "F", "G"],
+      "requiredSegments": ["EA", "AB", "AD", "DC", "CB", "DB", "EC", "AG"],
+      "invariants": ["ABCD is rectangle", "E,A,B collinear", "EC intersects DB at G", "EC intersects AD at F", "AB<AD", "AG is drawn only in figure_2"]
+    }
+  ]
+}

@@ -1,0 +1,9 @@
+{
+  "caseId": "asks-type-only",
+  "sourceImageSha256": "fixture-derived",
+  "promptVersion": "question-vision-v4",
+  "schemaVersion": "question-vision-v1",
+  "responseFile": "response.json",
+  "expected": "failure",
+  "expectedErrorPath": "asks"
+}

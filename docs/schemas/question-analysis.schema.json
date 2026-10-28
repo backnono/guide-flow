@@ -1,0 +1,55 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "guide-flow/question-analysis.schema.json",
+  "title": "QuestionAnalysis",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["grade", "subject", "type", "rawText", "normalizedText", "entities", "relations", "knowns", "asks", "confidence", "fieldConfidence", "uncertainItems"],
+  "properties": {
+    "grade": {"type": "integer", "minimum": 1, "maximum": 12},
+    "subject": {"type": "string", "minLength": 1},
+    "type": {"type": "string", "enum": ["arithmetic", "fraction", "equation", "word_problem", "geometry_numeric", "geometry_proof", "unsupported"]},
+    "rawText": {"type": "string", "minLength": 1},
+    "normalizedText": {"type": "string", "minLength": 1},
+    "entities": {"type": "array", "items": {"$ref": "#/$defs/entity"}},
+    "relations": {"type": "array", "items": {"$ref": "#/$defs/relation"}},
+    "knowns": {"type": "array", "items": {"$ref": "#/$defs/known"}},
+    "asks": {"type": "array", "items": {"$ref": "#/$defs/ask"}},
+    "confidence": {"type": "number", "minimum": 0, "maximum": 1},
+    "fieldConfidence": {"type": "object", "additionalProperties": {"type": "number", "minimum": 0, "maximum": 1}},
+    "uncertainItems": {"type": "array", "items": {"type": "string", "minLength": 1}}
+  },
+  "$defs": {
+    "entity": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "type"],
+      "properties": {"id": {"type": "string", "minLength": 1}, "type": {"type": "string", "minLength": 1}}
+    },
+    "relation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["type"],
+      "properties": {
+        "type": {"type": "string", "minLength": 1},
+        "points": {"type": "array", "items": {"type": "string"}},
+        "segments": {"type": "array", "items": {"type": "string"}},
+        "lines": {"type": "array", "items": {"type": "string"}},
+        "point": {"type": "string"},
+        "target": {"type": "array", "items": {"type": "string"}}
+      }
+    },
+    "known": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["name", "value", "unit"],
+      "properties": {"name": {"type": "string"}, "value": {"type": "string"}, "unit": {"type": "string"}}
+    },
+    "ask": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["type", "target"],
+      "properties": {"type": {"type": "string"}, "target": {"type": "array", "items": {"type": "string"}}}
+    }
+  }
+}
